@@ -1,6 +1,6 @@
 = GoodMobiley's Encoder Library =
 
-This library allows you to read from 2-pin encoders. To use it you will need an encoder, and the appropriate hardware to read from it.
+This Arduino library allows you to read from 2-pin encoders. To use it you will need an encoder, and the appropriate hardware to read from it.
 
 == License ==
 
