@@ -13,25 +13,26 @@ GM::Encoder::Encoder(uint16_t pin1, uint16_t pin2, int32_t dotsPerRev, float cou
     pinMode(pin2, INPUT_PULLUP); 
 
     state = (digitalRead(pin2)<<1) | digitalRead(pin1); //initializes the state var by punching pin 2's val over and inserting pin 1's val into first bit
-    prevState = state;
+    state |= (state<<2);    //sets the previous state to the initial state
 }
 
 void GM::Encoder::Tick(){
-    state = (digitalRead(pin2)<<1) | digitalRead(pin1); //punches pin 2's val over and inserts pin 1's val into first bit
+    state <<= 2;    //shift the state variable over two bits to make room for new state data
+    state |= (digitalRead(pin2)<<1) | digitalRead(pin1); //punches pin 2's val over and inserts pin 1's val into first bit
 
-    if ((state&1) != (prevState&1)) //if first bit (Far right) changed
-    if ((state&1) == (state>>1)){   //and the two bits in state are the same i.e. 00000011
+    if ((state&1) != (state>>2&1))      //if first bit (Far right) changed i.e. 00001110
+    if ((state&1) == (state>>1&1)){     //and the two bits in state are the same i.e. 00000011
         stepBackwards();    //rotates 1/4 dot backwards
-    } else {                        //if two bits are different i.e. 00000010
+    } else {                            //if two bits are different i.e. 00000010
         stepForwards();     //rotates 1/4 dot forwards
     }
-    else if ((state>>1) != (prevState>>1)) //if first bit (Second to right) changed
-    if((state&1) == (state>>1)){    //and the two bits in state are the same i.e. 00000011
+    else if ((state>>1&1) != (state>>3&1))  //if second bit (Second to right) changed i.e. 00001101
+    if      ((state&1) == (state>>1&1)){    //and the two bits in state are the same i.e. 00000011
         stepForwards();     //rotates 1/4 dot forwards
-    } else {                        //if two bits are different i.e. 00000010
+    } else {                                //if two bits are different i.e. 00000010
         stepBackwards();    //rotates 1/4 dot backwards
     }
-    prevState = state;
+
     setAngle();
 
     uint32_t time = millis();

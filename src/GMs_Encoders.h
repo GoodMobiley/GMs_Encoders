@@ -7,7 +7,7 @@ namespace GM
     class Encoder{
         private:
          bool       inverted;
-         uint8_t    state, prevState;
+         uint8_t    state;
          uint16_t   pin1, pin2;
          int32_t    dotsPerRev, fourDPR, 
                     angle=0, prevAngle=0, wrapNum=0;
