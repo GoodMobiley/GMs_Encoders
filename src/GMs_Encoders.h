@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <math.h>
 
 #ifndef GM_ENCODERS_H
 #define GM_ENCODERS_H
