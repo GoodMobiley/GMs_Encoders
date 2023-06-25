@@ -8,6 +8,7 @@ void setup()
     myEncoder.setPosition(50);      //sets current position of encoder *Note, based off of counts per revolution
     myEncoder.setCountsPerRev(360); //i.e. setCountsPerRev(360) ==> 360 degrees per revolution
 	Serial.begin(115200);
+    Serial.print("Hello?");
 }
 
 int64_t prevTime = 0;   //to find total time passed
@@ -15,7 +16,7 @@ String numGap = " | ";  //separates values printed
 
 void loop()
 {
-	myEncoder.Tick();   //function placed in a loop to allow the arduino to check for encoder state changes
+	myEncoder.tick();   //function placed in a loop to allow the arduino to check for encoder state changes
 
     uint32_t time = millis();   //gets the time in milliseconds since arduino was turned on
     uint16_t delay = 100;   //time between each serial print

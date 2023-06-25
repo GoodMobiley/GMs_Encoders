@@ -1,14 +1,12 @@
 #include "GMs_Encoders.h"
 
-GM::Encoder::Encoder(uint16_t pin1, uint16_t pin2, int32_t dotsPerRev, float countsPerRev, bool inverted){
-    this->dotsPerRev = dotsPerRev;      //Gimme dem vals
-    this->fourDPR = 4*dotsPerRev;
-    this->countsPerRev = countsPerRev;
-    this->inverted = inverted;
-    this->pin1 = pin1;  this->pin2 = pin2;
+GM::Encoder::Encoder(uint16_t pin1, uint16_t pin2, int32_t dotsPerRev, float countsPerRev, bool inverted):
+    dotsPerRev(dotsPerRev),     fourDPR(dotsPerRev*4),  //Gimme dem vals
+    countsPerRev(countsPerRev), inverted(inverted),
+    pin1(pin1),                 pin2(pin2),
 
-    samplePeriod = 36000.0/dotsPerRev;  //period of reading rate 2.5 (10/4) deg/s
-
+    samplePeriod(36000.0/dotsPerRev)    //period of reading rate 2.5 (10/4) deg/s
+{
     pinMode(pin1, INPUT_PULLUP);        //set pin modes
     pinMode(pin2, INPUT_PULLUP); 
 
@@ -16,7 +14,7 @@ GM::Encoder::Encoder(uint16_t pin1, uint16_t pin2, int32_t dotsPerRev, float cou
     state |= (state<<2);    //sets the previous state to the initial state
 }
 
-void GM::Encoder::Tick(){
+void GM::Encoder::tick(){
     state <<= 2;    //shift the state variable over two bits to make room for new state data
     state |= (digitalRead(pin2)<<1) | digitalRead(pin1); //punches pin 2's val over and inserts pin 1's val into first bit
 
