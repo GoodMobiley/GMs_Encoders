@@ -4,11 +4,10 @@ GM::Encoder myEncoder{3, 4, 600, 2*PI, false}; //(Pin 1, Pin 2, Dots Per Revolut
 
 void setup()
 {
+    Serial.begin(115200);
     myEncoder.setInverted(true);    //flip the positive direction of rotation
     myEncoder.setPosition(50);      //sets current position of encoder *Note, based off of counts per revolution
     myEncoder.setCountsPerRev(360); //i.e. setCountsPerRev(360) ==> 360 degrees per revolution
-	Serial.begin(115200);
-    Serial.print("Hello?");
 }
 
 int64_t prevTime = 0;   //to find total time passed
@@ -26,10 +25,10 @@ void loop()
     if (time - prevTime > delay){   //if time passed since last print is greater than delay variable
         prevTime = 2*time - prevTime - delay;   //resets previous time with overhang
 
-        Serial.println(String(myEncoder.getPosition()) +numGap+      //print out information
-                     String(myEncoder.getAngle())      +numGap+
-                     String(myEncoder.getDirection())  +numGap+
-                     String(myEncoder.getVelocity())   +numGap+
-                     String(myEncoder.getAcceleration()));
+        Serial.println(String(myEncoder.getPosition())   +numGap+      //print out information
+                       String(myEncoder.getAngle())      +numGap+
+                       String(myEncoder.getDirection())  +numGap+
+                       String(myEncoder.getVelocity())   +numGap+
+                       String(myEncoder.getAcceleration()));
     }
 }
