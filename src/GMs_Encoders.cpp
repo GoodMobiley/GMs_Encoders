@@ -36,7 +36,7 @@ void GM::Encoder::tick(){
     uint32_t time = millis();
 
     if (time-prevTime > samplePeriod){                  //If time since last sample has exceeded the sample time
-        prevTime = 2*time - prevTime - samplePeriod;    //sets previous time with overhang taken into account
+        prevTime += samplePeriod;    //time - (time - prevTime - samplePeriod) -> prevTime + samplePeriod
         velocity = float(angle-prevAngle)*1000.0/samplePeriod;      //solves for velocity (dp/dt)
         prevAngle = angle;
         acceleration = (velocity-prevVelocity)*1000.0/samplePeriod; //solves for acceleration (dv/dt)
@@ -48,7 +48,7 @@ void GM::Encoder::tick(){
  * PRIVATE PARTS
 ******************/
 
-void GM::Encoder::setAngle(){   //keeps values in bounds. aligned ref used for variables ment to change with the wrapped variable
+void GM::Encoder::setAngle(){   //keeps values in bounds. aligned ref used for variables meant to change with the wrapped variable
     while (position + wrapNum*fourDPR>fourDPR){     //keep subtracting from the wrap number until the angle is less than upper bounds
         --wrapNum;
         prevAngle -= fourDPR;   //keeps wrapping from impacting velocity
