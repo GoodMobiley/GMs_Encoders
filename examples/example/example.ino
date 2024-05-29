@@ -23,7 +23,7 @@ void loop()
                             //This can get in the way of the encoder and cause it to skip states.
 
     if (time - prevTime > delay){   //if time passed since last print is greater than delay variable
-        prevTime = 2*time - prevTime - delay;   //resets previous time with overhang
+        prevTime += delay;          //resets previous time
 
         Serial.println(String(myEncoder.getPosition())   +numGap+      //print out information
                        String(myEncoder.getAngle())      +numGap+
